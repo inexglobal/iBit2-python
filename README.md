@@ -2,7 +2,7 @@
 
 powered by micro:bit
 
-![i-BIT](blob:https://github.com/64054c56-fd7b-4eb4-a3d4-eb8b5f1faa1f)
+![i-BIT]([blob:https://github.com/64054c56-fd7b-4eb4-a3d4-eb8b5f1faa1f](https://github.com/inexglobal/iBit2-python/blob/main/icon487x487px.png))
 
 The package adds support for the [i-BIT](https://inex.co.th/home/product/ibit/) controller board from Innovative Experiment [INEX](https://inex.co.th).
 
