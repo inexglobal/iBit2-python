@@ -27,6 +27,7 @@ The following micro:bit pins are used for analog and digital sensors, DC motor d
 By default, iBIT() uses IBIT_V2 (0x4A).
 If you want IBIT_V1 (0x48), pass the address to the constructor.
 
+CODE:
 from microbit import *
 from iBIT import *
 
@@ -40,7 +41,10 @@ Use iBIT's motor function to drive motor forward and backward. The speed motor i
 * The direction must be either FORWARD or BACKWARD
 * Speed is an integer value between 0 - 100
 
-Example:
+CODE:
+from iBIT import *
+
+ibit = iBIT()
 
 ibit.Motor(FORWARD, 100)
 ibit.Motor(BACKWARD, 100)
@@ -52,7 +56,10 @@ Spin is used to control both motors separately. For example, one motor spins for
 * The Spin direction must be either SPIN_LEFT or SPIN_RIGHT
 * Speed is an integer value between 0 - 100
 
-Example:
+CODE:
+from iBIT import *
+
+ibit = iBIT()
 
 ibit.Spin(SPIN_LEFT, 100)
 ibit.Spin(SPIN_RIGHT, 100)
@@ -64,7 +71,10 @@ The Turn function is used to control the robot movement by turning. One motor st
 * The Turn direction must be either TURN_LEFT or TURN_RIGHT
 * Speed is an integer value between 0 - 100
 
-Example:
+CODE:
+from iBIT import *
+
+ibit = iBIT()
 
 ibit.Turn(TURN_LEFT, 100)
 ibit.Turn(TURN_RIGHT, 100)
@@ -73,8 +83,10 @@ ibit.Turn(TURN_RIGHT, 100)
 
 MotorStop is used to stop both motors. The speed is set to 0 automatically.
 
-Example:
+CODE:
+from iBIT import *
 
+ibit = iBIT()
 ibit.MotorStop()
 
 ### Servo
@@ -83,7 +95,10 @@ Use this function to control the servo angle from 0 to 180 degrees.
 
 * Degree is an integer value between 0 - 180
 
-Example:
+CODE:
+from iBIT import *
+
+ibit = iBIT()
 
 ibit.Servo(SV1, 90)
 ibit.Servo(SV2, 90)
@@ -103,6 +118,7 @@ iBIT provides 8-channel analog inputs with voltage range 0..3.3V.
 * Read the analog input 0 and display the conversion data on micro:bit.
   User can change the analog channel any time.
 
+CODE:
 from microbit import *
 from iBIT import *
 
@@ -111,6 +127,7 @@ display.show(str(ibit.ReadADC(0)))  # ADC0
 
 * Drive the motors with Forward and Backward by counting speed 0 - 100
 
+CODE:
 from microbit import *
 from iBIT import *
 
@@ -128,6 +145,7 @@ while True:
 * Drive the motors by pressing button A and B.
   Turn Left by speed 50 when pressed button A and Turn Right by speed 50 when pressed button B.
 
+CODE:
 from microbit import *
 from iBIT import *
 
@@ -145,6 +163,7 @@ while True:
 * Spin the motors by pressing button A and B.
   Spin Left by speed 50 when pressed button A and Spin Right by speed 50 when pressed button B.
 
+CODE:
 from microbit import *
 from iBIT import *
 
@@ -161,6 +180,7 @@ while True:
 
 * Example for Servo: drive SV1 and SV2 from 0 - 180 and then back to 0 again (repeat forever).
 
+CODE:
 from microbit import *
 from iBIT import *
 
@@ -179,6 +199,7 @@ while True:
 
 * Example for ServoStop (free servo mode).
 
+CODE:
 from microbit import *
 from iBIT import *
 
