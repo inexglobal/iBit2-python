@@ -80,12 +80,12 @@ ibit = iBIT()
 
 ibit.Turn(TURN_LEFT, 100)
 ibit.Turn(TURN_RIGHT, 100)
-
+```
 ### Motor Stop
 
 MotorStop is used to stop both motors. The speed is set to 0 automatically.
 
-CODE:
+```
 from iBIT import *
 
 ibit = iBIT()
