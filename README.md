@@ -1,167 +1,197 @@
-# iBit2-python
-# iBIT extension block package for i-BIT robot kit
+# iBIT MicroPython library for i-BIT robot kit
 
 powered by micro:bit
 
-![i-BIT](https://raw.githubusercontent.com/emwta/pxt-iBit/master/icon.png)  
+![i-BIT](https://raw.githubusercontent.com/emwta/pxt-iBit/master/icon.png)
 
-The package adds support for the [i-BIT](https://inex.co.th/home/product/ibit/) conroller board from Innovative Experiment [INEX](https://inex.co.th).
+The package adds support for the [i-BIT](https://inex.co.th/home/product/ibit/) controller board from Innovative Experiment [INEX](https://inex.co.th).
 
 ### micro:bit Pin Assignment
 
 The following micro:bit pins are used for analog and digital sensors, DC motor drivers and servo motors:
 
-* ``P0`` -- Analog Input 0 (micro:bit default)
-* ``P1`` -- Analog Input 1 (micro:bit default)
-* ``P2`` -- Analog Input 2 (micro:bit default)
-* ``P8`` -- Digital Input/Output and AnalogWrite/Servo1
-* ``P12`` -- Digital Input/Output and AnalogWrite/Servo2
-* ``P13`` -- DigitalWrite Pin for DC motor control direction 1
-* ``P14`` -- AnalogWrite Pin for DC motor speed control 1
-* ``P15`` -- DigitalWrite Pin for DC motor control direction 2
-* ``P16`` -- AnalogWrite Pin for DC motor speed control 2
-* ``P19`` -- SCL connected to I2C-based 12-bit ADC chip (ADS7828)
-* ``P20`` -- SDA connected to I2C-based 12-bit ADC chip (ADS7828)
+* P0  -- Analog Input 0 (micro:bit default)
+* P1  -- Analog Input 1 (micro:bit default)
+* P2  -- Analog Input 2 (micro:bit default)
+* P8  -- Digital Input/Output and PWM/Servo1 (SV1)
+* P12 -- Digital Input/Output and PWM/Servo2 (SV2)
+* P13 -- DigitalWrite Pin for DC motor control direction 1
+* P14 -- AnalogWrite (PWM) Pin for DC motor speed control 1
+* P15 -- DigitalWrite Pin for DC motor control direction 2
+* P16 -- AnalogWrite (PWM) Pin for DC motor speed control 2
+* P19 -- SCL connected to I2C-based 12-bit ADC chip (ADS7828-like)
+* P20 -- SDA connected to I2C-based 12-bit ADC chip (ADS7828-like)
 
-### Motor control Block
+### Import and create iBIT instance
 
-Use iBIT's motor block to drives motor forward and backward. The speed motor is adjustable between 0 to 100.
+By default, iBIT() uses IBIT_V2 (0x4A).
+If you want IBIT_V1 (0x48), pass the address to the constructor.
 
-* The dirrection must be select either `Forward` or `Backward`
-* Speed is an integer value between `0 - 100`
+from microbit import *
+from iBIT import *
 
+ibit = iBIT()        # Default: IBIT_V2 (0x4A)
+# ibit = iBIT(0x48)  # IBIT_V1 (0x48)
 
-```blocks
-iBIT.Motor(ibitMotor.Forward, 100)
+### Motor control
 
-iBIT.Motor(ibitMotor.Backward, 100)
-```
+Use iBIT's motor function to drive motor forward and backward. The speed motor is adjustable between 0 to 100.
 
-### Spin Block
+* The direction must be either FORWARD or BACKWARD
+* Speed is an integer value between 0 - 100
 
-Spin block is used to control both motors separately. For example, choose one motor spin with forward direction another one spin with backward direction.
+Example:
 
-* The Spin select direction must be either `Left` or `Right`
-* Speed is an integer value between `0 - 100`
+ibit.Motor(FORWARD, 100)
+ibit.Motor(BACKWARD, 100)
 
-```blocks
-iBIT.Spin(ibitSpin.Left, 100)
+### Spin
 
-iBIT.Spin(ibitSpin.Right, 100)
-```
+Spin is used to control both motors separately. For example, one motor spins forward while the other spins backward.
 
-### Turn Block
+* The Spin direction must be either SPIN_LEFT or SPIN_RIGHT
+* Speed is an integer value between 0 - 100
 
-The Turn block is used to to control the robot movment by turning. The one motor will stop, another one is moving. The vipot point is a center of the robot body.
+Example:
 
-* The Turn select direction must be either `Left` or `Right`
-* Speed is an integer value between `0 - 100`
+ibit.Spin(SPIN_LEFT, 100)
+ibit.Spin(SPIN_RIGHT, 100)
 
-```blocks
-iBIT.Turn(ibitTurn.Left, 100)
+### Turn
 
-iBIT.Turn(ibitTurn.Right, 100)
-```
+The Turn function is used to control the robot movement by turning. One motor stops while the other motor runs (pivot turn).
 
-### Motor Stop Block 
+* The Turn direction must be either TURN_LEFT or TURN_RIGHT
+* Speed is an integer value between 0 - 100
 
-The Motor Stop block is used to stop both motors. The speed is set to `0` automatic.
+Example:
 
-```blocks
-iBIT.MotorStop()
-```
+ibit.Turn(TURN_LEFT, 100)
+ibit.Turn(TURN_RIGHT, 100)
 
-### Servo Block
+### Motor Stop
 
-Use this block for control the servo's moving degree from 0 to 180
+MotorStop is used to stop both motors. The speed is set to 0 automatically.
 
-* Degree is an integer value between `0 - 180`
+Example:
 
-```blocks
-iBIT.Servo(ibitServo.SV1, 90)
-```
+ibit.MotorStop()
 
-### ReadAD Block
+### Servo
 
-This block is used to read the analog input data from the I2C-based ADC integrated circuit, ADS7828. The resolution of conversion is 12-bit. Data will be 0 to 4095. iBIT have 8-ch analog inputs. The pinout voltage range is 0 to +3.3V
+Use this function to control the servo angle from 0 to 180 degrees.
 
-* Analog sensor port are `ADC0 - ADC7`
-* Select analog channel from `ADC0 - ADC7` for reading the analog sensor.
-* Get the analog value to set the conditions for the robot's mission.
+* Degree is an integer value between 0 - 180
+
+Example:
+
+ibit.Servo(SV1, 90)
+ibit.Servo(SV2, 90)
+
+### ReadADC
+
+ReadADC reads the analog input data from the I2C-based ADC (ADS7828-like).
+The conversion is typically 12-bit and often returns values in the range 0..4095.
+iBIT provides 8-channel analog inputs with voltage range 0..3.3V.
+
+* Analog sensor ports are ADC0 - ADC7
+* Select analog channel 0 - 7 for reading the analog sensor.
+* Use the analog value as conditions for the robot's mission.
 
 ### Example
 
-* Read the analog input 0 and display the conversion data on micro:bit. User can change the analog channel any time.
+* Read the analog input 0 and display the conversion data on micro:bit.
+  User can change the analog channel any time.
 
-```blocks
-basic.showNumber(iBIT.ReadADC(ibitReadADC.ADC0))
-```
+from microbit import *
+from iBIT import *
 
-* Drive the motors with Forward and Backward by counting speed `0 - 100`
+ibit = iBIT()
+display.show(str(ibit.ReadADC(0)))  # ADC0
 
-```blocks
-let speed = 0
-basic.forever(() => {
-    for (let speed = 0; speed <= 100; speed++) {
-        iBIT.Motor(ibitMotor.Forward, speed)
-        basic.pause(50)
-    }
-    for (let speed = 0; speed <= 100; speed++) {
-        iBIT.Motor(ibitMotor.Backward, speed)
-        basic.pause(50)
-    }
-})
-```
+* Drive the motors with Forward and Backward by counting speed 0 - 100
 
-* Drive the motors by pressing button `A` and `B`. Turn Left by speed 50 when pressed button `A` and Turn Right by speed 50 when pressed button `B`.
+from microbit import *
+from iBIT import *
 
-```blocks
-input.onButtonPressed(Button.A, () => {
-    iBIT.Turn(ibitTurn.Left, 50)
-})
-input.onButtonPressed(Button.B, () => {
-    iBIT.Turn(ibitTurn.Right, 50)
-})
-```
+ibit = iBIT()
 
-* Spin the motors by pressing button `A` and `B`. Spin Left by speed 50 when pressed button `A` and Spin Right by speed 50 when pressed button `B`.
+while True:
+    for speed in range(0, 101):
+        ibit.Motor(FORWARD, speed)
+        sleep(50)
 
-```blocks
-input.onButtonPressed(Button.A, () => {
-    iBIT.Spin(ibitSpin.Left, 50)
-})
-input.onButtonPressed(Button.B, () => {
-    iBIT.Spin(ibitSpin.Right, 50)
-})
-```
+    for speed in range(0, 101):
+        ibit.Motor(BACKWARD, speed)
+        sleep(50)
 
-* Example for Servo, drive the servo motor's movement angle at Servo output 1 and 2 from `0 - 180` and back to 0 to restart again. 
+* Drive the motors by pressing button A and B.
+  Turn Left by speed 50 when pressed button A and Turn Right by speed 50 when pressed button B.
 
-```blocks
-basic.forever(() => {
-    for (let Degree = 0; Degree <= 180; Degree++) {
-        iBIT.Servo(ibitServo.SV1, Degree)
-        iBIT.Servo(ibitServo.SV2, Degree)
-        basic.pause(10)
-        while (Degree == 180) {
-            Degree = 0
-        }
-    }
-})
-```
+from microbit import *
+from iBIT import *
 
-* Example for set Servo Stop or set freedom servo.
+ibit = iBIT()
 
-```blocks
-input.onButtonPressed(Button.A, () => {
-    iBIT.Servo(ibitServo.SV1, 90)
-})
-input.onButtonPressed(Button.B, () => {
-    iBIT.ServoStop(ibitServo.SV1)
-})
-```
+while True:
+    if button_a.was_pressed():
+        ibit.Turn(TURN_LEFT, 50)
 
+    if button_b.was_pressed():
+        ibit.Turn(TURN_RIGHT, 50)
 
+    sleep(10)
+
+* Spin the motors by pressing button A and B.
+  Spin Left by speed 50 when pressed button A and Spin Right by speed 50 when pressed button B.
+
+from microbit import *
+from iBIT import *
+
+ibit = iBIT()
+
+while True:
+    if button_a.was_pressed():
+        ibit.Spin(SPIN_LEFT, 50)
+
+    if button_b.was_pressed():
+        ibit.Spin(SPIN_RIGHT, 50)
+
+    sleep(10)
+
+* Example for Servo: drive SV1 and SV2 from 0 - 180 and then back to 0 again (repeat forever).
+
+from microbit import *
+from iBIT import *
+
+ibit = iBIT()
+
+while True:
+    for deg in range(0, 181):
+        ibit.Servo(SV1, deg)
+        ibit.Servo(SV2, deg)
+        sleep(10)
+
+    for deg in range(180, -1, -1):
+        ibit.Servo(SV1, deg)
+        ibit.Servo(SV2, deg)
+        sleep(10)
+
+* Example for ServoStop (free servo mode).
+
+from microbit import *
+from iBIT import *
+
+ibit = iBIT()
+
+while True:
+    if button_a.was_pressed():
+        ibit.Servo(SV1, 90)
+
+    if button_b.was_pressed():
+        ibit.ServoStop(SV1)
+
+    sleep(10)
 
 ## License
 
@@ -169,4 +199,4 @@ MIT
 
 ## Supported targets
 
-* for PXT/microbit
+* MicroPython for BBC micro:bit
