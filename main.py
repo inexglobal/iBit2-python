@@ -13,6 +13,8 @@
 from microbit import *
 from iBIT import *  # Requires your iBIT.py library in the project
 
+ibit = iBIT()
+
 # Motor direction toggling state
 direction_motor = 0          # 0 = FORWARD, 1 = BACKWARD
 direction_time = 0           # Counts time slots to change behavior
