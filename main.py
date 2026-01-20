@@ -13,6 +13,9 @@
 from microbit import *
 from iBIT import *  # Requires your iBIT.py library in the project
 
+# iBIT MicroPython port (instance-based I2C address selection)
+# - ibit = iBIT()        -> default address = IBIT_V2 (0x4A)
+# - ibit = iBIT(0x48)    -> address = IBIT_V1 (0x48)
 ibit = iBIT()
 
 # Motor direction toggling state
@@ -84,7 +87,7 @@ while True:
 
             print("ADC0-7 Read Test")
             adc_labels = ["ADC{}".format(i) for i in range(8)]
-            adc_values = [iBIT.ReadADC(i) for i in range(8)]  # Uses channel style: 0..7
+            adc_values = [ibit.ReadADC(i) for i in range(8)]  # Uses channel style: 0..7
             print("[" + ", ".join(adc_labels) + "]")
             print("[" + ", ".join("{:4d}".format(v) for v in adc_values) + "]")
             print()
@@ -99,25 +102,25 @@ while True:
 
             # Alternate between running and stopping the motor every 500 ms
             if direction_time % 2 != 0:
-                iBIT.Motor(direction_motor, spd)
+                ibit.Motor(direction_motor, spd)
             else:
-                iBIT.MotorStop()
+                ibit.MotorStop()
 
             # Swap servo targets based on direction
             if direction_motor:
-                iBIT.Servo(SV1, 60)
-                iBIT.Servo(SV2, 120)
+                ibit.Servo(SV1, 60)
+                ibit.Servo(SV2, 120)
                 print("SV1 = 60 deg, SV2 = 120 deg")
             else:
-                iBIT.Servo(SV1, 120)
-                iBIT.Servo(SV2, 60)
+                ibit.Servo(SV1, 120)
+                ibit.Servo(SV2, 60)
                 print("SV1 = 120 deg, SV2 = 60 deg")
 
         # ---------------------------
         # No button pressed: Safe state
         # ---------------------------
         else:
-            iBIT.MotorStop()
-            iBIT.ServoStop(SV1)
-            iBIT.ServoStop(SV2)
+            ibit.MotorStop()
+            ibit.ServoStop(SV1)
+            ibit.ServoStop(SV2)
     sleep(10)
