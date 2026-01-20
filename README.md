@@ -2,7 +2,7 @@
 
 powered by micro:bit
 
-![i-BIT](https://raw.githubusercontent.com/emwta/pxt-iBit/master/icon.png)
+![i-BIT](blob:https://github.com/64054c56-fd7b-4eb4-a3d4-eb8b5f1faa1f)
 
 The package adds support for the [i-BIT](https://inex.co.th/home/product/ibit/) controller board from Innovative Experiment [INEX](https://inex.co.th).
 
