@@ -120,7 +120,7 @@ while True:
         # No button pressed: Safe state
         # ---------------------------
         else:
-            ibit.MotorStop()
+            ibit.MotorStop(M_ALL)
             ibit.ServoStop(SV1)
             ibit.ServoStop(SV2)
     sleep(10)

@@ -26,6 +26,8 @@ SV2 = 1
 
 M1 = 0
 M2 = 1
+M12 = 2
+M_ALL = 3
 
 # ADC command bytes (matching your MakeCode enum values)
 ADC0 = 132
@@ -155,28 +157,35 @@ class iBIT:
             pin15.write_digital(1)
             pin16.write_analog(motorspeed)
 
-    def MotorStop(self):
-        pin13.write_digital(1)
-        pin14.write_analog(0)
-        pin15.write_digital(1)
-        pin16.write_analog(0)
+    def MotorStop(self, ch):
+        if ch == M1 or ch == 1:
+            pin13.write_digital(1)
+            pin14.write_analog(0)
+        if ch == M2 or ch == 2:
+            pin15.write_digital(1)
+            pin16.write_analog(0)
+        if ch == M_ALL or ch == M12 or ch == 12:
+            pin13.write_digital(1)
+            pin14.write_analog(0)
+            pin15.write_digital(1)
+            pin16.write_analog(0)
 
     def setMotor(self, channel, direction, speed):
         motorspeed = self.__map_0_100_to_0_1023(speed)
 
-        if channel == M1 and direction == FORWARD:
+        if (channel == M1 or channel == 1) and direction == FORWARD:
             pin13.write_digital(1)
             pin14.write_analog(motorspeed)
 
-        elif channel == M2 and direction == FORWARD:
+        elif (channel == M2 or channel == 2) and direction == FORWARD:
             pin15.write_digital(0)
             pin16.write_analog(motorspeed)
 
-        elif channel == M1 and direction == BACKWARD:
+        elif (channel == M1 or channel == 1) and direction == BACKWARD:
             pin13.write_digital(0)
             pin14.write_analog(motorspeed)
 
-        elif channel == M2 and direction == BACKWARD:
+        elif (channel == M2 or channel == 2) and direction == BACKWARD:
             pin15.write_digital(1)
             pin16.write_analog(motorspeed)
 
