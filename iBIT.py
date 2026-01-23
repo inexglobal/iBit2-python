@@ -7,7 +7,7 @@
 #   - ReadADC(ADC0..ADC7)   (command byte style)
 #   - Otherwise returns -1
 
-from microbit import pin8, pin12, pin13, pin14, pin15, pin16, i2c
+from microbit import pin8, pin12, pin13, pin14, pin15, pin16, i2c, sleep
 
 # ---------------------------
 # Public constants (like enums)
@@ -233,3 +233,64 @@ class iBIT:
             self.__servo_stop(pin8)
         elif which == SV2:
             self.__servo_stop(pin12)
+
+    # ---------------------------
+    # Public API (short movement helpers)
+    # ---------------------------
+    # These are convenience wrappers around Motor/Motor2/Turn/Spin.
+    # If t_sec > 0, the robot runs for that duration (seconds).
+    # Note: these functions do not auto-stop at the end; call ao() if needed.
+
+    def fd(self, spd, t_sec=0):
+        """Move forward at spd (%). Optional duration in seconds."""
+        self.Motor(FORWARD, spd)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def fd2(self, spd1, spd2, t_sec=0):
+        """Move forward with independent left/right speeds (%). Optional duration in seconds."""
+        self.Motor2(FORWARD, spd1, spd2)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def bk(self, spd, t_sec=0):
+        """Move backward at spd (%). Optional duration in seconds."""
+        self.Motor(BACKWARD, spd)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def bk2(self, spd1, spd2, t_sec=0):
+        """Move backward with independent left/right speeds (%). Optional duration in seconds."""
+        self.Motor2(BACKWARD, spd1, spd2)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def sl(self, spd, t_sec=0):
+        """Spin left (in-place rotation) at spd (%). Optional duration in seconds."""
+        self.Spin(SPIN_LEFT, spd)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def sr(self, spd, t_sec=0):
+        """Spin right (in-place rotation) at spd (%). Optional duration in seconds."""
+        self.Spin(SPIN_RIGHT, spd)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def tl(self, spd, t_sec=0):
+        """Turn left (arc turn) at spd (%). Optional duration in seconds."""
+        self.Turn(TURN_LEFT, spd)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def tr(self, spd, t_sec=0):
+        """Turn right (arc turn) at spd (%). Optional duration in seconds."""
+        self.Turn(TURN_RIGHT, spd)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
+
+    def ao(self, t_sec=0):
+        """All stop (stop both motors). Optional wait time in seconds."""
+        self.MotorStop(M_ALL)
+        if t_sec > 0:
+            sleep(t_sec * 1000)
